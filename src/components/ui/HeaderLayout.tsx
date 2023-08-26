@@ -1,6 +1,6 @@
 import React from "react";
-import { Layout, ConfigProvider, Menu, FloatButton } from "antd";
-import { Routes, Route, NavLink, useLocation } from "react-router-dom";
+import { Layout, Menu } from "antd";
+import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import LangSelector from "./LangSelector";
 
@@ -15,15 +15,15 @@ const HeaderLayout = () => {
         gap: "12px",
         justifyContent: "space-between",
         alignItems: "stretch",
-        backgroundColor: "#fea458",
+        backgroundColor: "#5C8984",
       }}
     >
       <NavLink to="/">
         <span
           style={{
-            display: "inline-block",
             height: "100%",
-            verticalAlign: "middle",
+            color: "#fff",
+            fontWeight: "bold",
           }}
         >
           ИнсайтЛаб
@@ -33,7 +33,7 @@ const HeaderLayout = () => {
         mode={"horizontal"}
         defaultSelectedKeys={["1"]}
         theme={"dark"}
-        style={{ flex: "auto", backgroundColor: "#fea458" }}
+        style={{ flex: "auto", backgroundColor: "#5C8984" }}
       >
         <Menu.Item key={1}>
           <NavLink to="/">{t("ui.menuMainPage")}</NavLink>

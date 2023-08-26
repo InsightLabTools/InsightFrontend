@@ -11,6 +11,7 @@ import {
   ReceivedData,
   StartingParam,
 } from "../../utils/Serial";
+import SerialControlButtons from "./SerialControlButtons";
 
 type PortState = "closed" | "closing" | "open" | "opening";
 
@@ -194,10 +195,13 @@ const SerialPortUI = () => {
   }, [portState]);
 
   return (
-    <div className="App">
-      <button onClick={manualConnectToPort}>Выбор порта</button>
-      <button onClick={manualOpenPort}>Старт</button>
-      <button onClick={manualDisconnectFromPort}>Стоп</button>
+    <div>
+      <SerialControlButtons
+        onSelectPort={manualConnectToPort}
+        onStart={manualOpenPort}
+        onStop={manualDisconnectFromPort}
+      />
+
       {serialData.map((data, index) => (
         <div key={index}>
           <span>{data.type}</span>
