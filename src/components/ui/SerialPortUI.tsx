@@ -4,22 +4,25 @@
  */
 
 import React, { useState, useRef, useEffect } from "react";
-import { LineBreakTransformer } from "../../utils/Serial";
+import {
+  LineBreakTransformer,
+  parseReceivedData,
+  prepareStartingParams,
+  ReceivedData,
+  StartingParam,
+} from "../../utils/Serial";
 
 type PortState = "closed" | "closing" | "open" | "opening";
 
-interface SerialPortUIProps {
-  canUseSerial: boolean;
-  initialParams: string;
-  onData: (data: string) => void;
-}
-
-const SerialPortUI = ({
-  canUseSerial,
-  initialParams,
-  onData,
-}: SerialPortUIProps) => {
+const SerialPortUI = () => {
+  const [canUseSerial] = useState(() => "serial" in navigator);
   const [portState, setPortState] = useState<PortState>("closed");
+
+  const [startingParams, setStartingParams] = useState<StartingParam[]>([
+    { name: "скорость", value: 23.0 },
+    { name: "угол", value: 90 },
+  ]);
+  const [serialData, setSerialData] = useState<ReceivedData[]>([]);
 
   const portRef = useRef<SerialPort | null>(null);
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
@@ -73,7 +76,8 @@ const SerialPortUI = ({
    * Отправляем команду на страт
    */
   const handleStart = async () => {
-    await writeToSerial("p<start;");
+    const params = prepareStartingParams(startingParams);
+    await writeToSerial(params);
   };
 
   /**
@@ -115,7 +119,7 @@ const SerialPortUI = ({
             break;
           }
           // console.log(value);
-          onData(value); // отправляем данные в обработчик
+          setSerialData(parseReceivedData(value)); // отправляем данные в обработчик
         }
       } catch (error) {
         console.error(error);
@@ -194,6 +198,13 @@ const SerialPortUI = ({
       <button onClick={manualConnectToPort}>Выбор порта</button>
       <button onClick={manualOpenPort}>Старт</button>
       <button onClick={manualDisconnectFromPort}>Стоп</button>
+      {serialData.map((data, index) => (
+        <div key={index}>
+          <span>{data.type}</span>
+          <span>{data.name}</span>
+          <span>{data.value}</span>
+        </div>
+      ))}
     </div>
   );
 };

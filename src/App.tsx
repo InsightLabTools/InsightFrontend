@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import SerialContainer from "./components/ui/SerialContainer";
+import SerialPortUI from "./components/ui/SerialPortUI";
 
 function App() {
-  return <SerialContainer />;
+  return <SerialPortUI />;
 }
 
 export default App;
