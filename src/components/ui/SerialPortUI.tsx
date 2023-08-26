@@ -12,6 +12,8 @@ import {
   StartingParam,
 } from "../../utils/Serial";
 import SerialControlButtons from "./SerialControlButtons";
+import WatchedData from "./WatchedData";
+import { Space } from "antd";
 
 type PortState = "closed" | "closing" | "open" | "opening";
 
@@ -19,10 +21,7 @@ const SerialPortUI = () => {
   const [canUseSerial] = useState(() => "serial" in navigator);
   const [portState, setPortState] = useState<PortState>("closed");
 
-  const [startingParams, setStartingParams] = useState<StartingParam[]>([
-    { name: "скорость", value: 23.0 },
-    { name: "угол", value: 90 },
-  ]);
+  const [startingParams, setStartingParams] = useState<StartingParam[]>([]);
   const [serialData, setSerialData] = useState<ReceivedData[]>([]);
 
   const portRef = useRef<SerialPort | null>(null);
@@ -195,21 +194,22 @@ const SerialPortUI = () => {
   }, [portState]);
 
   return (
-    <div>
-      <SerialControlButtons
-        onSelectPort={manualConnectToPort}
-        onStart={manualOpenPort}
-        onStop={manualDisconnectFromPort}
-      />
-
-      {serialData.map((data, index) => (
-        <div key={index}>
-          <span>{data.type}</span>
-          <span>{data.name}</span>
-          <span>{data.value}</span>
-        </div>
-      ))}
-    </div>
+    <>
+      <div>
+        <SerialControlButtons
+          onSelectPort={manualConnectToPort}
+          onStart={manualOpenPort}
+          onStop={manualDisconnectFromPort}
+        />
+      </div>
+      <div>
+        <Space wrap>
+          {serialData.map((data, index) => (
+            <WatchedData key={index} data={data} />
+          ))}
+        </Space>
+      </div>
+    </>
   );
 };
 

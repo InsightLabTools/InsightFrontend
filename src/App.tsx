@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import MainPage from "./components/pages/MainPage";
 import HeaderLayout from "./components/ui/HeaderLayout";
 
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 
 function App() {
   return (
