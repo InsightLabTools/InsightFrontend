@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Space } from "antd";
+import { Button, Card, Space } from "antd";
 
 interface SerialControlButtonsProps {
   onSelectPort: () => void;
@@ -13,17 +13,19 @@ const SerialControlButtons = ({
   onStop,
 }: SerialControlButtonsProps) => {
   return (
-    <Space wrap>
-      <Button onClick={onSelectPort} type="primary">
-        Выбрать порт
-      </Button>
-      <Button onClick={onStart} type="dashed">
-        Старт
-      </Button>
-      <Button onClick={onStop} type="dashed">
-        Стоп
-      </Button>
-    </Space>
+    <Card title={"Управление устройством"}>
+      <Space wrap>
+        <Button onClick={onSelectPort} type="primary">
+          Выбрать порт
+        </Button>
+        <Button onClick={onStart} type="dashed">
+          Старт
+        </Button>
+        <Button onClick={onStop} type="dashed">
+          Стоп
+        </Button>
+      </Space>
+    </Card>
   );
 };
 
