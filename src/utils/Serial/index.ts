@@ -35,6 +35,22 @@ const prepareStartingParams = (data: StartingParam[]) => {
   return `p<${values};`;
 };
 
+// размер строки в байтах
+const byteSize = (str:string):number => new Blob([str]).size;
+
+const checkSum = (data: string): boolean => {
+  try{
+    const equalSignIndex = data.lastIndexOf("="); // ищем знак "="
+    const crc = Number(data.slice(equalSignIndex + 1)); // находим число в конце сообщения
+    const payload = data.slice(0, equalSignIndex + 1); // получаем строку без контрольной суммы
+
+    return crc === byteSize(payload);
+  }
+  catch(e){
+    return false;
+  }
+}
+
 const parseReceivedData = (data: string): ReceivedData[] => {
   const result: ReceivedData[] = [];
 
@@ -59,4 +75,4 @@ const parseReceivedData = (data: string): ReceivedData[] => {
   return result;
 };
 
-export { LineBreakTransformer, parseReceivedData, prepareStartingParams };
+export { LineBreakTransformer, parseReceivedData, prepareStartingParams, checkSum };
