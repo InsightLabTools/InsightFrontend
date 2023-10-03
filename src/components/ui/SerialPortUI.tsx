@@ -15,6 +15,8 @@ import {
 import SerialControlButtons from "./SerialControlButtons";
 import WatchedDataList from "./WatchedDataList";
 
+import { Row, Col } from "antd";
+
 type PortState = "closed" | "closing" | "open" | "opening";
 
 const SerialPortUI = () => {
@@ -203,12 +205,18 @@ const SerialPortUI = () => {
 
     return (
         <>
-            <SerialControlButtons
-                onSelectPort={manualConnectToPort}
-                onStart={manualOpenPort}
-                onStop={manualDisconnectFromPort}
-            />
-            <WatchedDataList watchedDataArray={serialData} />
+            <Row gutter={24}>
+                <Col span={6}>
+                    <SerialControlButtons
+                        onSelectPort={manualConnectToPort}
+                        onStart={manualOpenPort}
+                        onStop={manualDisconnectFromPort}
+                    />
+                </Col>
+                <Col span={18}>
+                    <WatchedDataList watchedDataArray={serialData} />
+                </Col>
+            </Row>
         </>
     );
 };
