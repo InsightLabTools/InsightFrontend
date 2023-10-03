@@ -13,7 +13,8 @@ const WatchedData = ({ data }: WatchedDataProps) => {
             style={{
                 width: "100%",
                 height: "100%",
-                backgroundColor: "greenyellow",
+                backgroundColor: "#468B97",
+                color: "white",
             }}
         >
             <PushpinOutlined /> <span>{data.name}</span>:

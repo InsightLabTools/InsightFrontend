@@ -1,3 +1,5 @@
+import { v4 } from "uuid";
+
 class LineBreakTransformer {
   container: string;
   constructor() {
@@ -23,6 +25,7 @@ export type ReceivedData = {
 };
 
 export type StartingParam = {
+  id: string,
   name: string;
   value: number;
 };

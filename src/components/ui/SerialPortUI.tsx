@@ -13,7 +13,8 @@ import {
     StartingParam,
 } from "../../utils/Serial";
 import SerialControlButtons from "./SerialControlButtons";
-import WatchedDataList from "./WatchedDataList";
+import MnemoScheme from "./MnemoScheme";
+import { v4 as uuidv4 } from "uuid";
 
 import { Row, Col } from "antd";
 
@@ -203,6 +204,30 @@ const SerialPortUI = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [portState]);
 
+    const handleCreateParam = () => {
+        console.log("add param", startingParams.length);
+        const param: StartingParam = {
+            value: 0,
+            name: `Param ${startingParams.length + 1}`,
+            id: uuidv4(),
+        };
+
+        setStartingParams([...startingParams, param]);
+    };
+
+    const handleParamUpdate = (data: StartingParam) => {
+        //console.log(data);
+        const changedParams = startingParams.filter(
+            (item) => item.id !== data.id
+        );
+        setStartingParams([...changedParams, data]);
+    };
+
+    const handleParamDelete = (id: string) => {
+        const changedParams = startingParams.filter((item) => item.id !== id);
+        setStartingParams(changedParams);
+    };
+
     return (
         <>
             <Row gutter={24}>
@@ -214,7 +239,13 @@ const SerialPortUI = () => {
                     />
                 </Col>
                 <Col span={18}>
-                    <WatchedDataList watchedDataArray={serialData} />
+                    <MnemoScheme
+                        watchedData={serialData}
+                        startingParams={startingParams}
+                        onCreateParam={handleCreateParam}
+                        onUpdateParam={handleParamUpdate}
+                        onDeleteParam={handleParamDelete}
+                    />
                 </Col>
             </Row>
         </>
