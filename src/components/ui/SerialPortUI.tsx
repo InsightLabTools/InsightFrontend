@@ -26,6 +26,7 @@ const SerialPortUI = () => {
 
     const [startingParams, setStartingParams] = useState<StartingParam[]>([]);
     const [serialData, setSerialData] = useState<ReceivedData[]>([]);
+    const [serialDataArray, setSerialDataArray] = useState<any>([]);
 
     const portRef = useRef<SerialPort | null>(null);
     const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
@@ -90,6 +91,7 @@ const SerialPortUI = () => {
         if (canUseSerial && portState === "closed" && portRef.current) {
             setPortState("opening");
             try {
+                setSerialDataArray([]); // для очистки графиков
                 await openPort(portRef.current);
                 setTimeout(handleStart, 2000); // ждём 2 секунды перед отправкой команды на старт
                 return true;
@@ -126,7 +128,16 @@ const SerialPortUI = () => {
 
                     // меняем state только если сходится контрольная сумма
                     if (checkSum(value)) {
-                        setSerialData(parseReceivedData(value)); // отправляем данные в обработчик
+                        const parsedSerialData = parseReceivedData(value);
+                        // setSerialDataArray((data: any) => [
+                        //     ...data,
+                        //     {
+                        //         x: data.length * 0.1,
+                        //         y: parsedSerialData[0].value,
+                        //     },
+                        // ]);
+
+                        setSerialData(parsedSerialData); // отправляем данные в обработчик
                     }
                 }
             } catch (error) {
@@ -204,17 +215,25 @@ const SerialPortUI = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [portState]);
 
+    /**
+     * Создание входного параметра
+     */
     const handleCreateParam = () => {
         console.log("add param", startingParams.length);
         const param: StartingParam = {
-            value: 0,
-            name: `Param ${startingParams.length + 1}`,
-            id: uuidv4(),
+            value: 0, // начальное значение
+            name: `Param ${startingParams.length + 1}`, // стартовое имя
+            id: uuidv4(), // уникальный индентификатор параметра
         };
 
+        // добавляем новый к массиву уже существующих параметров
         setStartingParams([...startingParams, param]);
     };
 
+    /**
+     * Обновление значения или названия входного параметра
+     * @param data входной параметр
+     */
     const handleParamUpdate = (data: StartingParam) => {
         //console.log(data);
         const changedParams = startingParams.filter(
@@ -223,6 +242,10 @@ const SerialPortUI = () => {
         setStartingParams([...changedParams, data]);
     };
 
+    /**
+     * Удаление входного параметра
+     * @param id идентификатор параметра
+     */
     const handleParamDelete = (id: string) => {
         const changedParams = startingParams.filter((item) => item.id !== id);
         setStartingParams(changedParams);
@@ -245,6 +268,7 @@ const SerialPortUI = () => {
                         onCreateParam={handleCreateParam}
                         onUpdateParam={handleParamUpdate}
                         onDeleteParam={handleParamDelete}
+                        plotData={serialDataArray}
                     />
                 </Col>
             </Row>

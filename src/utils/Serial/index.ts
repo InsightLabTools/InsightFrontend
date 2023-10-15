@@ -42,6 +42,8 @@ const prepareStartingParams = (data: StartingParam[]) => {
 const byteSize = (str:string):number => new Blob([str]).size;
 
 const checkSum = (data: string): boolean => {
+  if (!data.startsWith("p>"))
+    return false;
   try{
     const equalSignIndex = data.lastIndexOf("="); // ищем знак "="
     const crc = Number(data.slice(equalSignIndex + 1)); // находим число в конце сообщения

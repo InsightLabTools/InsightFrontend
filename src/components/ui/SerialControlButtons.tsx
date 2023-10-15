@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Card, Space } from "antd";
+import { PlayCircleFilled, StopFilled } from "@ant-design/icons";
 
 interface SerialControlButtonsProps {
     onSelectPort: () => void;
@@ -19,10 +20,10 @@ const SerialControlButtons = ({
                     Выбрать порт
                 </Button>
                 <Button onClick={onStart} type="dashed">
-                    Старт
+                    <PlayCircleFilled /> Старт
                 </Button>
                 <Button onClick={onStop} type="dashed">
-                    Стоп
+                    <StopFilled /> Стоп
                 </Button>
             </Space>
         </Card>

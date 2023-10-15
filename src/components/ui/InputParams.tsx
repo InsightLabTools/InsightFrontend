@@ -20,6 +20,7 @@ const InputParams = ({ data, onUpdate, onDelete }: inputParamsProps) => {
 
     return (
         <Card
+            bordered={false}
             style={{
                 width: "100%",
                 height: "100%",
@@ -27,16 +28,25 @@ const InputParams = ({ data, onUpdate, onDelete }: inputParamsProps) => {
                 color: "white",
             }}
         >
-            <Paragraph editable={{ onChange: setName }}>{name}</Paragraph>
+            <Typography.Title
+                style={{ color: "white" }}
+                level={3}
+                editable={{ onChange: setName }}
+            >
+                {name}
+            </Typography.Title>
 
             <InputNumber
+                style={{ fontSize: "2vw", width: "100%" }}
                 defaultValue={0}
                 onChange={(value) => {
                     setValue(value ?? 0);
                 }}
             />
 
-            <Button onClick={() => onDelete(data.id)}>x</Button>
+            <p>
+                <a onClick={() => onDelete(data.id)}>Удалить</a>
+            </p>
         </Card>
     );
 };

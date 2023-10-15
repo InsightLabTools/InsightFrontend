@@ -1,7 +1,7 @@
 import React from "react";
 import { ReceivedData } from "../../utils/Serial";
 import { PushpinOutlined } from "@ant-design/icons";
-import { Card } from "antd";
+import { Card, Typography } from "antd";
 
 interface WatchedDataProps {
     data: ReceivedData;
@@ -10,6 +10,7 @@ interface WatchedDataProps {
 const WatchedData = ({ data }: WatchedDataProps) => {
     return (
         <Card
+            bordered={false}
             style={{
                 width: "100%",
                 height: "100%",
@@ -17,8 +18,10 @@ const WatchedData = ({ data }: WatchedDataProps) => {
                 color: "white",
             }}
         >
-            <PushpinOutlined /> <span>{data.name}</span>:
-            <span>{data.value}</span>
+            <Typography.Title style={{ color: "white" }} level={3}>
+                {data.name}
+            </Typography.Title>
+            <span style={{ fontSize: "2vw" }}>{data.value}</span>
         </Card>
     );
 };
